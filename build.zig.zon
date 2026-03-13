@@ -1,7 +1,7 @@
 .{
     .name = .fugaz,
     .version = "0.0.0",
-    .fingerprint = 0x74d536068e1df96d,
+    .fingerprint = 0xd1f3a3fa4472921,
     .minimum_zig_version = "0.15.2",
     .paths = .{
         "build.zig",

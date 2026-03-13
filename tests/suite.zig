@@ -1,5 +1,5 @@
 const std = @import("std");
-const tempfile = @import("tempfile");
+const fugaz = @import("fugaz");
 
 test "TempDir integration" {
 	const allocator = std.testing.allocator;
@@ -10,7 +10,7 @@ test "TempDir integration" {
 	const sandbox_path = try sandbox.dir.realpathAlloc(allocator, ".");
 	defer allocator.free(sandbox_path);
 
-	var temp_dir = try tempfile.builder()
+	var temp_dir = try fugaz.builder()
 		.prefix("suite-dir-")
 		.suffix(".case")
 		.tempDirIn(allocator, sandbox_path);
@@ -40,7 +40,7 @@ test "TempFile integration" {
 	const sandbox_path = try sandbox.dir.realpathAlloc(allocator, ".");
 	defer allocator.free(sandbox_path);
 
-	var temp_file = try tempfile.builder()
+	var temp_file = try fugaz.builder()
 		.prefix("suite-file-")
 		.suffix(".txt")
 		.tempFileIn(allocator, sandbox_path);

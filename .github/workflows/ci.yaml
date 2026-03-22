@@ -14,13 +14,14 @@ permissions:
 
 jobs:
   build:
+    name: Build and Generate Documentation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Setup Zig
-        uses: mlugg/setup-zig@v2
+        uses: jassielof/setup-zig@v1
 
       - name: Check formatting
         run: zig fmt .
@@ -28,8 +29,8 @@ jobs:
       - name: Build
         run: zig build --summary all
 
-      - name: Build docs
-        run: zig build --summary all docs
+      - name: Generate documentation
+        run: zig build docs --summary all
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
@@ -37,6 +38,7 @@ jobs:
           path: zig-out/docs
 
   tests:
+    name: Testing
     strategy:
       matrix:
         os:
@@ -46,11 +48,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: build
     steps:
-      - uses: actions/checkout@v6
-      - uses: mlugg/setup-zig@v2
-      - run: zig build --summary all tests
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Zig
+        uses: jassielof/setup-zig@v1
+      - name: Run test suite
+        run: zig build testing --summary all
 
   pages:
+    name: Deploy to GitHub Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
